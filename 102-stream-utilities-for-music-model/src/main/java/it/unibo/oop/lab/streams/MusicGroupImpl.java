@@ -1,6 +1,5 @@
 package it.unibo.oop.lab.streams;
 
-import java.security.KeyStore.Entry;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -9,8 +8,6 @@ import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.Set;
 import java.util.stream.Stream;
-
-import javax.lang.model.element.QualifiedNameable;
 
 /**
  *
