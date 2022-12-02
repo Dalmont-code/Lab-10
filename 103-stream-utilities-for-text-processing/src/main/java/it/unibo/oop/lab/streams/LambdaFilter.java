@@ -6,7 +6,10 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
 import java.awt.Toolkit;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -38,7 +41,18 @@ public final class LambdaFilter extends JFrame {
         /**
          * Commands.
          */
-        IDENTITY("No modifications", Function.identity());
+        IDENTITY("No modifications", Function.identity()),
+        LOWERCASE("Lowercase", s -> s.toLowerCase()),
+        CHARCOUNT("Character count", s -> s.length() + ""),
+        SORT("Sort", s -> splitter(s).stream()
+                .sorted(String::compareTo)
+                .map(str -> str + "\n")
+                .reduce("", String::concat)),
+        WORDCOUNT("Word count", s -> splitter(s).stream()
+                .collect(Collectors.groupingBy(String::toString))
+                .entrySet().stream()
+                .map(e -> e.getKey() + " -> " + e.getValue().size() + "\n")
+                .reduce("", String::concat));
 
         private final String commandName;
         private final Function<String, String> fun;
@@ -55,6 +69,14 @@ public final class LambdaFilter extends JFrame {
 
         public String translate(final String s) {
             return fun.apply(s);
+        }
+
+        private static Collection<String> splitter(String s) {
+            Collection<String> coll = new ArrayList<>();
+            for (String str : s.split(" ")) {
+                coll.add(str);
+            }
+            return coll;
         }
     }
 
