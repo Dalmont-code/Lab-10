@@ -36,6 +36,7 @@ import javax.swing.JTextArea;
 public final class LambdaFilter extends JFrame {
 
     private static final long serialVersionUID = 1760990730218643730L;
+    private static final String ANY_NON_WORD = "(\\s|\\p{Punct})+";
 
     private enum Command {
         /**
@@ -46,11 +47,11 @@ public final class LambdaFilter extends JFrame {
         CHARCOUNT("Character count", s -> s.length() + " "),
         LINECOUNT("Line count", s -> splitter(s, "\n").stream()
                 .count() + " "),
-        SORT("Lexicographic Sort", s -> splitter(s, " ").stream()
+        SORT("Lexicographic Sort", s -> splitter(s, ANY_NON_WORD).stream()
                 .sorted(String::compareTo)
                 .map(str -> str + "\n")
                 .reduce("", String::concat)),
-        WORDCOUNT("Word count", s -> splitter(s, " ").stream()
+        WORDCOUNT("Word count", s -> splitter(s, ANY_NON_WORD).stream()
                 .collect(Collectors.groupingBy(String::toString))
                 .entrySet().stream()
                 .map(e -> e.getKey() + " -> " + e.getValue().size() + "\n")
