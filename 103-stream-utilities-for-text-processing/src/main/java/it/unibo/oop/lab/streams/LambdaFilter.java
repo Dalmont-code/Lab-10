@@ -44,11 +44,13 @@ public final class LambdaFilter extends JFrame {
         IDENTITY("No modifications", Function.identity()),
         LOWERCASE("Lowercase", String::toLowerCase),
         CHARCOUNT("Character count", s -> s.length() + " "),
-        SORT("Sort", s -> splitter(s).stream()
+        LINECOUNT("Line count", s -> splitter(s, "\n").stream()
+                .count() + " "),
+        SORT("Lexicographic Sort", s -> splitter(s, " ").stream()
                 .sorted(String::compareTo)
                 .map(str -> str + "\n")
                 .reduce("", String::concat)),
-        WORDCOUNT("Word count", s -> splitter(s).stream()
+        WORDCOUNT("Word count", s -> splitter(s, " ").stream()
                 .collect(Collectors.groupingBy(String::toString))
                 .entrySet().stream()
                 .map(e -> e.getKey() + " -> " + e.getValue().size() + "\n")
@@ -71,9 +73,9 @@ public final class LambdaFilter extends JFrame {
             return fun.apply(s);
         }
 
-        private static Collection<String> splitter(final String s) {
+        private static Collection<String> splitter(final String s, final String spl) {
             final Collection<String> coll = new ArrayList<>();
-            for (final String str : s.split(" ")) {
+            for (final String str : s.split(spl)) {
                 coll.add(str);
             }
             return coll;
