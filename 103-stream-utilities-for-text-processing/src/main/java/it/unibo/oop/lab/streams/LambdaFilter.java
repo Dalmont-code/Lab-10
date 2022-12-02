@@ -42,8 +42,8 @@ public final class LambdaFilter extends JFrame {
          * Commands.
          */
         IDENTITY("No modifications", Function.identity()),
-        LOWERCASE("Lowercase", s -> s.toLowerCase()),
-        CHARCOUNT("Character count", s -> s.length() + ""),
+        LOWERCASE("Lowercase", String::toLowerCase),
+        CHARCOUNT("Character count", s -> s.length() + " "),
         SORT("Sort", s -> splitter(s).stream()
                 .sorted(String::compareTo)
                 .map(str -> str + "\n")
@@ -71,9 +71,9 @@ public final class LambdaFilter extends JFrame {
             return fun.apply(s);
         }
 
-        private static Collection<String> splitter(String s) {
-            Collection<String> coll = new ArrayList<>();
-            for (String str : s.split(" ")) {
+        private static Collection<String> splitter(final String s) {
+            final Collection<String> coll = new ArrayList<>();
+            for (final String str : s.split(" ")) {
                 coll.add(str);
             }
             return coll;
